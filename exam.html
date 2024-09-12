@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Portal - Exam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 800px;
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 20px;
+            text-align: right;
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .options {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <center><h1>Entrance Exam</h1></center>
+        <div class="timer" id="timer">Time left: 60:00</div>
+        <div class="question" id="questionText"></div>
+        <div class="options">
+            <input type="radio" id="option1" name="option" value="0">
+            <label for="option1" id="labelOption1"></label><br>
+
+            <input type="radio" id="option2" name="option" value="1">
+            <label for="option2" id="labelOption2"></label><br>
+
+            <input type="radio" id="option3" name="option" value="2">
+            <label for="option3" id="labelOption3"></label><br>
+
+            <input type="radio" id="option4" name="option" value="3">
+            <label for="option4" id="labelOption4"></label>
+        </div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: ' What is smallest unit of the information?', options: ['A bit', 'A byte ', 'A block', 'A nibble'], correctAnswer: 0 },
+            { question: ' Which of the following is an output device?', options: ['Keyboard', 'Mouse ', 'Light pen', 'VDU'], correctAnswer: 3 },
+            { question: ' BIOS is used?', options: ['By operating system', 'By compiler ', 'By interpreter', 'By application software'], correctAnswer: 'By operating system' },
+
+            { question: ' Arrange the words given below in a meaningful sequence.   1.Presentation   2. Recommendation   3. Arrival   4. Discussion  5. Introduction   ', options: ['5, 3, 4, 1, 2', '3, 5, 4, 2, 1', '3, 5, 1, 4, 2', "5, 3, 1, 2, 4"], correctAnswer: '3, 5, 1, 4, 2' },
+
+            { question: ' What is the capital of India?', options: ['Mumbai', 'Himachal Pradesh', 'Delhi', 'Punjab'], correctAnswer: 'Delhi' },
+            { question: ' The Arithmetic mean of 5, 10, 12, 18, 20 is:', options: ['5', ' 13', '25', '55'], correctAnswer: '13' },
+            { question: ' 7 8 15 24 35 48 63 _?', options: ['70', ' 75', '80', '55'], correctAnswer: '80' },
+            { question: ' A / B = C; C > D then', options: ['A is always greater than D', ' C is always greater than D', 'B is always less than D', 'None'], correctAnswer: 'A is always greater than D' },
+            { question: ' Which of the following numbers is divisible by 3? (i) 541326 (ii) 5967013', options: ['(ii) only', '(i) only', '(i) and (ii) both', '(i) and (ii) none'], correctAnswer: '(i) only' },
+            { question: ' 12 1,2,6,24,_?', options: ['111', '151', '120', '125'], correctAnswer: '120' },
+            { question: ' Choose the pair of numbers which comes next 75 65 85 55 45 85 35', options: ['25 15', '25 85 ', '35 25 ', '35 85'], correctAnswer: '25 85' },
+            { question: ' Which word does NOT belong with the others?', options: ['Tyre', 'steering wheel', 'engine ', 'car'], correctAnswer: 'car' },
+            { question: ' Which word does NOT belong with the others?', options: ['heading', 'body ', 'letter ', 'closing'], correctAnswer: 'letter' },
+            { question: ' Which word does NOT belong with the others?', options: ['leopard', 'cougar ', 'elephant', 'lion'], correctAnswer: 'elephant' },
+            { question: ' Cup is to coffee as bowl is to', options: ['dish', 'soup ', 'spoon', 'food'], correctAnswer: 'soup' },
+            { question: ' Play is to actor as concert is to', options: ['symphony', 'musician ', 'piano', 'percussion'], correctAnswer: 'musician' },
+            { question: ' Sponge is to porous as rubber is to', options: ['massive', 'solid ', 'elastic', 'inflexible'], correctAnswer: 'elastic' },
+            { question: ' Careful is to cautious as boastful is to', options: ['arrogant', 'humble ', 'joyful', 'suspicious'], correctAnswer: 'arrogant' },
+            { question: ' SCD, TEF, UGH, ____, WKL', options: ['CMN', 'UJI ', 'VIJ', 'IJT'], correctAnswer: 'VIJ' },
+            { question: ' B2CD, _____, BCD4, B5CD, BC6D', options: ['B2C2D', 'BC3D ', 'B2C3D', 'BCD7'], correctAnswer: 'BC3D' },
+            { question: ' ELFA, GLHA, ILJA, _____, MLNA', options: ['OLPA', 'KLMA ', 'LLMA', 'KLLA'], correctAnswer: 'KLLA' },
+            { question: ' CMM, EOO, GQQ, _____, KUU', options: ['GRR', 'GSS ', 'ISS', 'ITT'], correctAnswer: 'ISS' },
+            { question: ' Exercise is to gym as eating is to', options: ['food', 'dieting ', 'fitness', 'restaurant'], correctAnswer: 'restaurant' },
+            { question: 'harvest', options: ['autumn', 'stockpile ', 'tractor', 'crop'], correctAnswer: 'crop' },
+            { question: 'book', options: ['fiction', 'pages', 'pictures', "learning"], correctAnswer: 'pages' },
+            { question: 'language', options: ['tongue', 'slang', 'writing', "words"], correctAnswer: 'words' },
+            { question: 'school', options: ['student', 'report card', 'test', "learning"], correctAnswer: 'student' },
+            { question: 'Look at this series: 2, 1, (1/2), (1/4), ... What number should come next?', options: ['(1/3)', '(1/8)', '(2/8)', "(1/16)"], correctAnswer: '(1/8)' },
+            { question: 'guitar', options: ['strings', 'teacher', 'band', "songs"], correctAnswer: 'strings' },
+            { question: 'Look at this series: 53, 53, 40, 40, 27, 27, ... What number should come next?', options: ['12', '27', '53', "14"], correctAnswer: '14' },
+            { question: 'election', options: ['President', 'November', 'nation', "voter"], correctAnswer: 'voter' },
+            { question: 'swimming', options: ['pool', 'bathing suit', 'water', "life jacket"], correctAnswer: 'water' },
+            { question: 'ENORMOUS (ANTONYMS)', options: ['soft', 'Average', 'Tiny', "weak"], correctAnswer: 'tiny' },
+            { question: 'OBEYING', options: ['Ordering', 'Following', 'Refusing', "Contradicting"], correctAnswer: 'Ordering' },
+            { question: 'The workers are hell bent at getting what is due to them.', options: ['hell bent for getting', 'hell bent upon getting', 'No improvement', "hell bent upon getting"], correctAnswer: 'hell bent upon getting' },
+            { question: 'his powerful desire brought about his downfall.', options: ['His intense desire', 'His desire for power', 'His fatal desire', "No improvement"], correctAnswer: 'His desire for power' },
+            { question: 'If he had time he will call you', options: ['would have', 'would have had', 'has', "No improvement"], correctAnswer: 'has' },
+            { question: 'During his long discourse, he did not touch that point.', options: ['touch upon', 'touch on', 'touch of', "No improvement"], correctAnswer: 'touch on' },
+            { question: 'That which cannot be corrected', options: ['Unintelligible', 'Indelible', 'Illegible', "Incorrigible"], correctAnswer: 'Incorrigible' },
+            { question: 'The study of ancient societies', options: ['Anthropology', 'Archaeology', 'History', "Ethnology"], correctAnswer: 'Archaeology' },
+            { question: 'List of the business or subjects to be considered at a meeting', options: ['Schedule', 'Timetable', 'Agenda', "plan"], correctAnswer: 'Agenda' },
+            { question: 'A person who knows many foreign languages', options: ['Linguist', 'Grammarian', 'Polyglot', "Bilingual"], correctAnswer: 'Linguist' },
+            { question: 'After driving professor Kumar to the museum she dropped him at his hotel.', options: ['After being driven to the museum, Professor Kumar was dropped at his hotel.', 'Professor Kumar was being driven dropped at his hotel.', 'After she had driven Professor Kumar to the museum she had dropped him at his hotel.', "After she was driven Professor Kumar to the museum she had dropped him at his hotel"], correctAnswer: 'After being driven to the museum, Professor Kumar was dropped at his hotel.' },
+            { question: 'They greet me cheerfully every morning.', options: ['Every morning I was greeted cheerfully.', 'I am greeted cheerfully by them every morning.', 'I am greeted cheerfully by them every morning.', "Cheerful greeting is done by them every morning to me."], correctAnswer: 'I am greeted cheerfully by them every morning.' },
+            { question: 'Darjeeling grows tea.', options: ['Tea is being grown in Darjeeling.', 'Let the tea be grown in Darjeeling.', 'Tea is grown in Darjeeling.', "Tea grows in Darjeeling."], correctAnswer: 'Tea is grown in Darjeeling.' },
+            { question: 'You need to clean your shoes properly.', options: ['Your shoes are needed to clean properly', 'You are needed to clean your shoes properly.', 'Your shoes need to be cleaned properly.', "Your shoes are needed by you to clean properly."], correctAnswer: 'Your shoes need to be cleaned properly.' },
+            { question: 'LIGHT:BLIND', options: ['speech: dumb', 'language: deaf', 'tongue: sound', "voice: vibration"], correctAnswer: 'speech: dumb' },
+            { question: '1. I         2.immediately    3.salary    4. my     5. want        ', options: ['43152', '15432', '25143', "42351"], correctAnswer: '15432' },
+            { question: '1. do	2. today	3. you  4. must	5. it	 ', options: ['34152', '25413', '12543', "51324"], correctAnswer: '34152' },
+            { question: '1. medicine	2. a	3. Neeta 4. given	5. was', options: ['51423', '25431', '15423', "35421"], correctAnswer: '35421' },
+            { question: 'You need not come unless you want to.', options: ['You dont need to come unless you want to', 'You come unless you dont want to', 'No correction required', "No correction required"], correctAnswer: 'You dont need to come unless you want to' },
+            { question: 'The man to who I sold my house was a cheat.', options: ['to whom I sell', 'to who I sell', 'No correction required', "to whom I sold"], correctAnswer: 'to whom I sold' },
+            { question: 'He is too important for tolerating any delay.', options: ['to tolerate', 'to tolerating', 'with tolerating', "at tolerating"], correctAnswer: 'to tolerate' },
+            { question: 'They are not beware of all the facts', options: ['are not aware for', 'are not aware of', 'must not to be aware for', "No correction required"], correctAnswer: 'are not aware of' },
+            { question: 'The brain of any computer system is', options: ['ALU', 'Memory', 'CPU', "Control unit"], correctAnswer: 'CPU' },
+            { question: 'A device that converts mechanical into electrical energy is?', options: ['solar cell', 'thermocouple', 'chemical cell', "generator"], correctAnswer: 'generator' },
+            { question: 'Which of the following is used in pencils?', options: ['Graphite', 'silicon', 'charcoal', "phosphorus"], correctAnswer: 'Graphite' },
+            { question: 'Chemical formula for water is', options: ['NaAlO2', 'H2O', 'Al2O3', "CaSiO3"], correctAnswer: 'H2O' },
+            { question: 'Washing soda is the common name for', options: ['Sodium carbonate', 'Calcium bicarbonate', 'Sodium bicarbonate', "Calcium carbonate"], correctAnswer: 'Sodium carbonate' },
+            { question: 'Which of the gas is not known as green house gas?', options: ['Nitrous oxide', 'Methane', 'Carbon dioxide', "Hydrogen"], correctAnswer: 'Methane' },
+            { question: '19 * 6', options: ['116', '126', '114', "156"], correctAnswer: '114' },
+            { question: ' What does the abbreviation HTML stand for? ', options: [' Hypertext Markup Language. ', 'Hypertext Markdown Language.', 'High Text Markup Language. ', " None of the above"], correctAnswer: 'Hypertext Markup Language.' },
+            { question: 'RAM stands for:- ', options: [' Random Access Memory ', 'Runtime Access Memory', 'Runtime Authenticate Memory ', "Random Authenticate Memory"], correctAnswer: 'Random Access Memory' },
+            { question: 'Which of the following software is used for making resume?', options: [' MS Excel ', 'MS Word', 'Dev C ', "Java"], correctAnswer: 'MS Word' },
+            { question: 'ROM Stand for:-', options: [' Read Only Memory', 'Random Only Memory', 'Random only on memory', "Java"], correctAnswer: 'Read Only Memory' },
+            { question: 'COMPUTER stand for:-', options: [' Common Operating Machine Purposely Used for Technological and Educational Research', 'Common Operating Machine Purposely Used for Technological  Educational Research', 'Computer Operating Machine Purposely Used for Technological and Educational Research', "Java"], correctAnswer: 'Common Operating Machine Purposely Used for Technological and Educational Research' },
+            { question: 'Computer word come from:-', options: ['Binary', 'Compute', 'Dev C ', "programming"], correctAnswer: 'Compute' },
+            { question: 'Computer Understand which language:-', options: ['Binary', 'JAVA', 'Dev C ', "C++"], correctAnswer: 'Binary' },
+            { question: 'LAN Stands for:-', options: ['Local Area Network', 'Logical Area Network', 'Logical Area Networking ', "Local Area Networking"], correctAnswer: 'Local Area Network' },
+            { question: 'WAN Stands for:-:-', options: ['Wide Area Network', 'Widly Area Network', 'Widly Area Networking ', "wide Area Networking"], correctAnswer: 'Wide Area Network' },
+
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer = 3600; // 1 hour in seconds
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById('questionText').innerText = currentQuestion.question;
+            document.getElementById('labelOption1').innerText = currentQuestion.options[0];
+            document.getElementById('labelOption2').innerText = currentQuestion.options[1];
+            document.getElementById('labelOption3').innerText = currentQuestion.options[2];
+            document.getElementById('labelOption4').innerText = currentQuestion.options[3];
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption && parseInt(selectedOption.value) === questions[currentQuestionIndex].correctAnswer) {
+                score++;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                localStorage.setItem('score', score);
+                window.location.href = 'result.html';
+            }
+        }
+
+        function startTimer() {
+            const timerElement = document.getElementById('timer');
+            const timerInterval = setInterval(function () {
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
+                timerElement.innerText = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    window.location.href = 'result.html';
+                }
+                timer--;
+            }, 1000);
+        }
+
+        window.onload = function () {
+            loadQuestion();
+            startTimer();
+        };
+    </script>
+
+</body>
+
+</html>

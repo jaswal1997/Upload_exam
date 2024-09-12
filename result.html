@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Portal - Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+        }
+        p {
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Your Score</h2>
+    <p id="scoreText"></p>
+</div>
+
+<script>
+    window.onload = function() {
+        const score = localStorage.getItem('score');
+        const totalQuestions = 70; // Replace with the actual number of questions
+        document.getElementById('scoreText').innerText = `You scored ${score} out of ${totalQuestions}`;
+    };
+</script>
+
+</body>
+</html>
