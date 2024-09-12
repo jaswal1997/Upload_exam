@@ -13,12 +13,13 @@
             align-items: center;
             height: 100vh;
         }
+        img{position: absolute;margin-top: -400px;margin-left: 80px;}
         .container {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 400px;
+            width: 500px;
         }
         h2 {
             text-align: center;
@@ -50,7 +51,7 @@
     </style>
 </head>
 <body>
-
+<center><img src="logo.png" alt="logo" height="90px" width="310"/></center>
 <div class="container">
     <h2>Register for Exam</h2>
     <form id="registrationForm">
@@ -67,6 +68,7 @@
         <input type="password" id="password" required>
 
         <button type="submit">Register</button>
+        <button onclick="location.assign('login.html')">Login </button>
     </form>
 </div>
 

@@ -27,21 +27,36 @@
             font-size: 18px;
             text-align: center;
         }
+        button {
+            width: 100px;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img{position: absolute;margin-top: -420px;margin-left: 0px;}
     </style>
 </head>
 <body>
-
+    <center><img src="logo.png" alt="logo" height="110px" width="400"/></center>
 <div class="container">
     <h2>Your Score</h2>
     <p id="scoreText"></p>
-</div>
+</div><br>
+<button onclick="location.assign('login.html')">LogOut</button>
 
 <script>
     window.onload = function() {
-        const score = localStorage.getItem('score');
-        const totalQuestions = 70; // Replace with the actual number of questions
-        document.getElementById('scoreText').innerText = `You scored ${score} out of ${totalQuestions}`;
-    };
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const totalQuestions = 75; // Adjust according to the total number of questions
+        document.getElementById('scoreText').innerText = `You scored ${currentUser.score || 0} out of ${totalQuestions}`;
+     };
 </script>
 
 </body>

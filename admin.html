@@ -18,7 +18,7 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 500px;
+            width: 800px;
         }
         h2 {
             text-align: center;
@@ -75,7 +75,7 @@
 </div>
 
 <script>
-    window.onload = function() {
+   window.onload = function() {
         displayRegistrations();
     };
 
@@ -84,7 +84,6 @@
         userTable.innerHTML = '';
 
         let users = JSON.parse(localStorage.getItem('users') || '[]');
-        let score = localStorage.getItem('score') || 'Not Attempted';
 
         users.forEach(user => {
             const row = document.createElement('tr');
@@ -98,7 +97,7 @@
             emailCell.innerText = user.email;
             contactCell.innerText = user.contact;
             passwordCell.innerText = user.password;
-            scoreCell.innerText = score;
+            scoreCell.innerText = user.score !== undefined ? user.score : 'Not Attempted';
 
             row.appendChild(nameCell);
             row.appendChild(emailCell);
